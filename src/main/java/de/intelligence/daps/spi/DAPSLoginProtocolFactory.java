@@ -1,64 +1,40 @@
 package de.intelligence.daps.spi;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import org.keycloak.Config;
 import org.keycloak.events.EventBuilder;
-import org.keycloak.models.ClientModel;
 import org.keycloak.models.KeycloakSession;
-import org.keycloak.models.KeycloakSessionFactory;
-import org.keycloak.models.ProtocolMapperModel;
-import org.keycloak.models.RealmModel;
 import org.keycloak.protocol.LoginProtocol;
-import org.keycloak.protocol.LoginProtocolFactory;
-import org.keycloak.representations.idm.ClientRepresentation;
+import org.keycloak.protocol.oidc.OIDCLoginProtocolFactory;
+import org.keycloak.protocol.oidc.OIDCProviderConfig;
 
-public class DAPSLoginProtocolFactory implements LoginProtocolFactory {
+public class DAPSLoginProtocolFactory extends OIDCLoginProtocolFactory {
 
-    @Override
-    public Map<String, ProtocolMapperModel> getBuiltinMappers() {
-        return new HashMap<>();
-    }
+    private OIDCProviderConfig shadowedConfig;
 
     @Override
-    public Object createProtocolEndpoint(KeycloakSession keycloakSession, EventBuilder eventBuilder) {
-        return null;
-    }
-
-    @Override
-    public void createDefaultClientScopes(RealmModel realmModel, boolean b) {
-
-    }
-
-    @Override
-    public void setupClientDefaults(ClientRepresentation clientRepresentation, ClientModel clientModel) {
-
+    public void init(Config.Scope config) {
+        super.init(config);
+        this.shadowedConfig = new OIDCProviderConfig(config);
     }
 
     @Override
     public LoginProtocol create(KeycloakSession session) {
-        return new DAPSLoginProtocol(session);
-    }
-
-    @Override
-    public void init(Config.Scope config) {
-
-    }
-
-    @Override
-    public void postInit(KeycloakSessionFactory factory) {
-
-    }
-
-    @Override
-    public void close() {
-
+        return new DAPSLoginProtocol().setSession(session);
     }
 
     @Override
     public String getId() {
-        return DAPSClientRegistrationProvider.PROTOCOL;
+        return "openid-connect";
+    }
+
+    @Override
+    public Object createProtocolEndpoint(KeycloakSession session, EventBuilder event) {
+        return new DAPSService(session, event, this.shadowedConfig);
+    }
+
+    @Override
+    public int order() {
+        return Integer.MAX_VALUE;
     }
 
 }

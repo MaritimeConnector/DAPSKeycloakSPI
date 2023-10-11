@@ -72,7 +72,7 @@ public final class DAPSProtocolMapper extends AbstractOIDCProtocolMapper impleme
         ProtocolMapperModel mapper = new ProtocolMapperModel();
         mapper.setName(name);
         mapper.setProtocolMapper(DAPSProtocolMapper.MAPPER_ID);
-        mapper.setProtocol(OIDCLoginProtocol.LOGIN_PROTOCOL);
+        mapper.setProtocol(DAPSLoginProtocol.LOGIN_PROTOCOL);
         Map<String, String> config = new HashMap<>();
         config.put(OIDCAttributeMapperHelper.INCLUDE_IN_ACCESS_TOKEN, "true");
         config.put(OIDCAttributeMapperHelper.INCLUDE_IN_ID_TOKEN, "true");

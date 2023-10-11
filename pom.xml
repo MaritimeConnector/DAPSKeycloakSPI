@@ -16,8 +16,8 @@
     </developers>
 
     <properties>
-        <maven.compiler.source>21</maven.compiler.source>
-        <maven.compiler.target>21</maven.compiler.target>
+        <maven.compiler.source>20</maven.compiler.source>
+        <maven.compiler.target>20</maven.compiler.target>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.developer.name>Deniz Groenhoff</project.developer.name>
         <project.developer.mail>deniz.groenhoff@uni-oldenburg.de</project.developer.mail>
